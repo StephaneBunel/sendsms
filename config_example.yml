@@ -1,0 +1,20 @@
+---
+app:
+  logLevel: "DEBUG"
+
+profiles:
+  default:
+    provider:              "ovh"
+    providerConfig:
+      api:
+        location:          "ovh-eu"
+        appKey:            "azertyuiop"
+        appSecret:         "qsdfghjklm"
+        consumerKey:       "wxcvbn"
+        servicename:       "apqlwn"
+      smsOptions:
+        sender:            "MyCorp"
+      smsOptionsCaps:
+        nostopclause:      "noStopClause"
+        servicename:       "serviceName"
+        senderforresponse: "senderForResponse"
