@@ -17,6 +17,6 @@ sendsms
 # Vendor subdirectory
 vendor/**/
 
-# Test config file
+# Test config file (real ID)
 config.yml
 

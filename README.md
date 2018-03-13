@@ -55,8 +55,14 @@ Read message from stdin:
 echo "Hello my friend !" | sendsms send --phone +330612345678 --stdin
 ```
 
-List alailable providers:
+List available providers:
 
 ```BASH
 sendsms provider list
+```
+
+Get info about a provider:
+
+```BASH
+sendsms provider info <provider>
 ```
