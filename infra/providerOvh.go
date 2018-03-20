@@ -1,11 +1,10 @@
-package provider
+package infra
 
 import (
 	"errors"
 	"strings"
 
-	modelRecipient "github.com/StephaneBunel/sendsms/recipient"
-	modelSMS "github.com/StephaneBunel/sendsms/sms"
+	"github.com/StephaneBunel/sendsms/domain"
 
 	"github.com/ovh/go-ovh/ovh"
 	"github.com/romana/rlog"
@@ -13,10 +12,8 @@ import (
 )
 
 type (
-	ovhNewSMS map[string]interface{}
-
 	ovhProvider struct {
-		ProviderInfo
+		domain.SmsProviderInfo
 		apiConfig struct {
 			location    string
 			appKey      string
@@ -27,13 +24,16 @@ type (
 		smsConfig map[string]interface{}
 		client    *ovh.Client
 	}
+
+	ovhNewSMS map[string]interface{}
 )
 
 func init() {
-	availableProviderCatalog["ovh"] = newOvhProvider
+	ovh, _ := newOvhProvider()
+	domain.NewProviderRepository().Add(ovh)
 }
 
-func newOvhProvider() (Provider, error) {
+func newOvhProvider() (domain.ISmsProvider, error) {
 	p := new(ovhProvider)
 	p.Name = "OVH"
 	p.Version = "0.2"
@@ -60,6 +60,14 @@ func newOvhProvider() (Provider, error) {
 	return p, nil
 }
 
+func (p *ovhProvider) prepareNewSMS() ovhNewSMS {
+	sms := make(ovhNewSMS)
+	for k, v := range p.smsConfig {
+		sms[k] = v
+	}
+	return sms
+}
+
 func (p *ovhProvider) open() (err error) {
 	if p.client != nil {
 		return nil
@@ -69,19 +77,11 @@ func (p *ovhProvider) open() (err error) {
 	return err
 }
 
-func (p *ovhProvider) Info() ProviderInfo {
-	return p.ProviderInfo
+func (p *ovhProvider) Info() domain.SmsProviderInfo {
+	return p.SmsProviderInfo
 }
 
-func (p *ovhProvider) prepareNewSMS() ovhNewSMS {
-	sms := make(ovhNewSMS)
-	for k, v := range p.smsConfig {
-		sms[k] = v
-	}
-	return sms
-}
-
-func (p *ovhProvider) Send(recipients modelRecipient.RecipientList, msg *modelSMS.Message) error {
+func (p *ovhProvider) Send(msg *domain.SmsMessage, phoneNumbers ...*domain.PhoneNumber) error {
 	if p.client == nil {
 		err := p.open()
 		if err != nil {
@@ -91,12 +91,12 @@ func (p *ovhProvider) Send(recipients modelRecipient.RecipientList, msg *modelSM
 
 	// Make receivers list
 	receivers := make([]string, 0)
-	for _, recip := range recipients {
-		receivers = append(receivers, recip.PhoneNumber)
+	for _, phone := range phoneNumbers {
+		receivers = append(receivers, phone.Get())
 	}
 
 	sms := p.prepareNewSMS()
-	for opt, val := range msg.Options {
+	for opt, val := range msg.SmsMessageOptions {
 		sms[opt] = val
 	}
 
@@ -155,5 +155,4 @@ func (p *ovhProvider) Config(userConfig *viper.Viper) {
 			delete(p.smsConfig, lcaseopt)
 		}
 	}
-
 }
