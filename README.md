@@ -14,36 +14,36 @@ Configuration sample (config.yml):
 
 ```YAML
 ---
-app:
+sendsms:
   logLevel: "INFO"
 
-profiles:
-  default:
-    provider:              "ovh"
-    providerConfig:
-      api:
-        location:          "ovh-eu"
-        appKey:            "azertyuiop"
-        appSecret:         "qsdfghjklm"
-        consumerKey:       "wxcvbn"
-        servicename:       "aqwokn"
-      smsOptions:
-        sender:            "MyCorp"
-      smsOptionsCaps:
-        nostopclause:      "noStopClause"
-        servicename:       "serviceName"
-        senderforresponse: "senderForResponse"
+  profiles:
+    default:
+      provider:              "ovh"
+      providerConfig:
+        api:
+          location:          "ovh-eu"
+          appKey:            "azertyuiop"
+          appSecret:         "qsdfghjklm"
+          consumerKey:       "wxcvbn"
+          servicename:       "aqwokn"
+        smsOptions:
+          sender:            "MyCorp"
+        smsOptionsCaps:
+          nostopclause:      "noStopClause"
+          servicename:       "serviceName"
+          senderforresponse: "senderForResponse"
 ```
 
 ## Usage Examples
 
-Send a message to a phone number:
+Send a message to a phone number using default profile:
 
 ```BASH
-sendsms send --phone +330612345678 --message "Hello my friend !"
+sendsms send --phone +330600000000 --message "Hello my friend !"
 ```
 
-Add other phone number:
+You can specify multiple recipient at a time:
 
 ```BASH
 sendsms send --phone +330612345678 --phone +330698547621 --message "Hello my friend !"
@@ -64,5 +64,5 @@ sendsms provider list
 Get info about a provider:
 
 ```BASH
-sendsms provider info <provider>
+sendsms provider info <provider name>
 ```
