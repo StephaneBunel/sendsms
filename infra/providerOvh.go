@@ -39,6 +39,7 @@ func newOvhProvider() (domain.ISmsProvider, error) {
 	p.Version = "0.2"
 	p.Authors = "(c) 2018 Stéphane Bunel"
 	p.Help = "Configuration example (in YAML)\n" +
+		"  providerConfig:\n" +
 		"    api:\n" +
 		"      location:          ovh-eu\n" +
 		"      appKey:            <appKey>\n" +
@@ -112,7 +113,6 @@ func (p *ovhProvider) Send(msg *domain.SmsMessage, phoneNumbers ...*domain.Phone
 
 	response := make(map[string]interface{})
 	err := p.client.Post("/sms/"+p.apiConfig.serviceName+"/jobs", sms, &response)
-	// var err error
 	if err != nil {
 		return err
 	}
