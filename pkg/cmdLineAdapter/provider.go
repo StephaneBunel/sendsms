@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/StephaneBunel/sendsms/domain"
+	domain "github.com/StephaneBunel/sendsms/pkg/sms"
 
 	"github.com/romana/rlog"
 	"github.com/spf13/cobra"
@@ -40,13 +40,13 @@ func (cli *cmdLineAdapter) providerCmdInit() {
 }
 
 func (cli *cmdLineAdapter) providerListCmd(cmd *cobra.Command, args []string) {
-	providerRepository := domain.NewProviderRepository()
+	providerRepository := domain.GetProviderRepository()
 	providerList := providerRepository.ListByName()
 	fmt.Println(strings.Join(providerList, ", "))
 }
 
 func (cli *cmdLineAdapter) providerInfoCmd(cmd *cobra.Command, args []string) {
-	providerRepository := domain.NewProviderRepository()
+	providerRepository := domain.GetProviderRepository()
 	if len(args) < 1 {
 		return
 	}

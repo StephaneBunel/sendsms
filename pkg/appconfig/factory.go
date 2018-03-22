@@ -1,4 +1,4 @@
-package infra
+package appconfig
 
 import (
 	"fmt"
@@ -8,21 +8,15 @@ import (
 	"github.com/spf13/viper"
 )
 
-type (
-	AppConfig struct {
-		Viper *viper.Viper
-	}
-)
-
-func NewAppConfig() *AppConfig {
+func New() *AppConfig {
 	c := new(AppConfig)
 	c.Viper = viper.New()
 
 	c.Viper.SetConfigType("yaml")
-	c.Viper.AddConfigPath("/etc/sendsms")
-	c.Viper.AddConfigPath("$HOME/.sendsms")
+	c.Viper.AddConfigPath("/etc/" + APP_NAME)
+	c.Viper.AddConfigPath("$HOME/." + APP_NAME)
 	c.Viper.AddConfigPath(".")
-	c.Viper.SetConfigName(c.Viper.GetString("config"))
+	c.Viper.SetConfigName(c.Viper.GetString(CONF_FILE_NAME))
 	err := c.Viper.ReadInConfig()
 	if err != nil {
 		_ = fmt.Errorf("Error reading configuration: %s \n", err)

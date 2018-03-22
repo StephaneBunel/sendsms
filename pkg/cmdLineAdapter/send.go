@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/StephaneBunel/sendsms/domain"
-	"github.com/StephaneBunel/sendsms/service"
+	domain "github.com/StephaneBunel/sendsms/pkg/sms"
+
 	"github.com/romana/rlog"
 	"github.com/spf13/cobra"
 )
@@ -25,7 +25,7 @@ func (cli *cmdLineAdapter) sendCmdInit() {
 }
 
 func (cli *cmdLineAdapter) sendCmd(cmd *cobra.Command, args []string) {
-	var smsService = service.NewSmsService(cli.selectAndConfigureProviderFromProfile())
+	var smsService = domain.NewSmsService(cli.selectAndConfigureProviderFromProfile())
 	var texto string
 
 	if cli.flags.stdin {
@@ -48,7 +48,7 @@ func (cli *cmdLineAdapter) sendCmd(cmd *cobra.Command, args []string) {
 	}
 }
 
-func (cli *cmdLineAdapter) selectAndConfigureProviderFromProfile() domain.ISmsProvider {
+func (cli *cmdLineAdapter) selectAndConfigureProviderFromProfile() domain.ProviderService {
 	if cli.flags.profile == "" {
 		rlog.Error("You must select the profile to use")
 		os.Exit(1)
@@ -64,7 +64,7 @@ func (cli *cmdLineAdapter) selectAndConfigureProviderFromProfile() domain.ISmsPr
 		os.Exit(1)
 	}
 
-	provider := domain.NewProviderRepository().FindByName(profileProviderName)
+	provider := domain.GetProviderRepository().FindByName(profileProviderName)
 	if provider == nil {
 		rlog.Error("Provider: ", profileProviderName, "not found.")
 		os.Exit(1)

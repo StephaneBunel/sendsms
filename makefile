@@ -1,18 +1,17 @@
-EXE = sendsms
 PROJ = github.com/StephaneBunel/sendsms
-TARGETS = sendsms
-SRC = domain/*.go service/*.go infra/*.go infra/**/*.go main.go
+EXE = $(notdir $(PROJ))
+SRC = cmd/**/main.go \
+      pkg/**/*.go
 
 LDFLAGS = -s
 GOBUILD = go build -v --ldflags="$(LDFLAGS)"
 
-all: $(TARGETS)
-
+all: $(EXE)
 $(EXE): $(SRC)
-	$(GOBUILD) -v $(PROJ)
+	$(GOBUILD) -v $(PROJ)/cmd/sendsms
 
 vendor:
 	govendor sync -v
 
 clean:
-	@rm -f $(TARGETS) $(PROJ)/$(EXE)
+	@rm -f $(EXE)

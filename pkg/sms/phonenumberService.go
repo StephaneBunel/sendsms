@@ -1,34 +1,25 @@
-package domain
+package sms
 
 import (
 	"errors"
 	"unicode"
-
-	"github.com/romana/rlog"
-)
-
-type (
-	PhoneNumber struct {
-		phone string
-	}
-
-	PhoneNumberList []*PhoneNumber
 )
 
 var (
-	phoneNumberErr_BAD = errors.New("BAD Phone number")
+	phonenumberErr_BAD = errors.New("BAD Phone number")
 )
 
-func NewPhoneNumber() *PhoneNumber {
-	return new(PhoneNumber)
+func NewPhonenumber() PhonenumberService {
+	return new(phonenumber)
 }
 
-func (pn *PhoneNumber) Get() string {
+func (pn *phonenumber) Get() string {
 	return pn.phone
 }
 
-func (pn *PhoneNumber) Set(phone string) error {
+func (pn *phonenumber) Set(phone string) error {
 	// Check if phone number contains only '+' and digital number
+	// Remove spaces
 	var plus bool = false
 	var compose string
 
@@ -41,20 +32,17 @@ func (pn *PhoneNumber) Set(phone string) error {
 				compose += "+"
 				plus = true
 			} else {
-				rlog.Debug(compose)
-				return phoneNumberErr_BAD
+				return phonenumberErr_BAD
 			}
 		case unicode.IsDigit(r) == false:
-			rlog.Debug(compose)
-			return phoneNumberErr_BAD
+			return phonenumberErr_BAD
 		default:
 			compose += string(r)
 		}
 	}
 
 	if compose == "" {
-		rlog.Debug(compose)
-		return phoneNumberErr_BAD
+		return phonenumberErr_BAD
 	}
 
 	pn.phone = compose

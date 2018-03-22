@@ -1,28 +1,27 @@
-package service
+package sms
 
 import (
-	"github.com/StephaneBunel/sendsms/domain"
 	"github.com/romana/rlog"
 )
 
 type (
-	SmsService struct {
-		provider domain.ISmsProvider
+	smsService struct {
+		provider ProviderService
 	}
 )
 
-func NewSmsService(provider domain.ISmsProvider) *SmsService {
-	s := new(SmsService)
+func NewSmsService(provider ProviderService) *smsService {
+	s := new(smsService)
 	s.provider = provider
 	return s
 }
 
-func (svc *SmsService) SendRaw(text string, phoneNumbers ...string) error {
-	var phoneNumberSet = make(map[string]*domain.PhoneNumber)
-	var finalRecipients = make([]*domain.PhoneNumber, 0)
+func (svc *smsService) SendRaw(text string, phoneNumbers ...string) error {
+	var phoneNumberSet = make(map[string]PhonenumberService)
+	var finalRecipients = make([]PhonenumberService, 0)
 
 	for _, phone := range phoneNumbers {
-		p := domain.NewPhoneNumber()
+		p := NewPhonenumber()
 		err := p.Set(phone)
 		if err != nil {
 			return err
@@ -36,7 +35,7 @@ func (svc *SmsService) SendRaw(text string, phoneNumbers ...string) error {
 	}
 	rlog.Debug("final recipient = ", finalRecipients)
 
-	message := domain.NewSmsMessage()
+	message := NewMessage()
 	message.SetText(text)
 	return svc.provider.Send(message, finalRecipients...)
 }
