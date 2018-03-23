@@ -2,23 +2,7 @@ package sms
 
 import "strings"
 
-type (
-	providerRepository struct {
-		repo map[string]ProviderService
-	}
-)
-
-var (
-	smsProviderRepository = &providerRepository{
-		repo: make(map[string]ProviderService),
-	}
-)
-
-func GetProviderRepository() ProviderRepositoryService {
-	return smsProviderRepository
-}
-
-func (prepo *providerRepository) Add(provider ProviderService) {
+func (prepo *providerRepository) Add(provider IProviderService) {
 	nameLow := strings.ToLower(provider.Info().Name)
 	prepo.repo[nameLow] = provider
 }
@@ -29,7 +13,7 @@ func (prepo *providerRepository) Exists(name string) bool {
 	return exists
 }
 
-func (prepo *providerRepository) FindByName(name string) ProviderService {
+func (prepo *providerRepository) FindByName(name string) IProviderService {
 	if prepo.Exists(name) {
 		return prepo.repo[name]
 	}

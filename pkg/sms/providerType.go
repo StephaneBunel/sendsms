@@ -5,10 +5,10 @@ import (
 )
 
 type (
-	ProviderService interface {
+	IProviderService interface {
 		Info() ProviderInfo
 		Config(*viper.Viper)
-		Send(*SmsMessage, ...PhonenumberService) error
+		Send(IMessageService, ...IPhonenumberService) error
 	}
 
 	ProviderInfo struct {

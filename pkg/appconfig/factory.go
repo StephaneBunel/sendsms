@@ -3,6 +3,7 @@ package appconfig
 import (
 	"fmt"
 	"os"
+	"path"
 
 	"github.com/romana/rlog"
 	"github.com/spf13/viper"
@@ -13,10 +14,11 @@ func New() *AppConfig {
 	c.Viper = viper.New()
 
 	c.Viper.SetConfigType("yaml")
-	c.Viper.AddConfigPath("/etc/" + APP_NAME)
-	c.Viper.AddConfigPath("$HOME/." + APP_NAME)
-	c.Viper.AddConfigPath(".")
-	c.Viper.SetConfigName(c.Viper.GetString(CONF_FILE_NAME))
+	c.Viper.AddConfigPath(path.Join("/etc", APP_NAME))
+	c.Viper.AddConfigPath(path.Join("$HOME", "."+APP_NAME))
+	c.Viper.AddConfigPath(path.Join("$HOME", ".config", APP_NAME))
+	c.Viper.AddConfigPath(path.Join("."))
+	c.Viper.SetConfigName(CONF_FILE_NAME)
 	err := c.Viper.ReadInConfig()
 	if err != nil {
 		_ = fmt.Errorf("Error reading configuration: %s \n", err)

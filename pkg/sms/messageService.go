@@ -1,31 +1,24 @@
 package sms
 
-func NewMessage() *SmsMessage {
-	m := new(SmsMessage)
-	m.options = make(map[string]interface{})
-	return m
-}
-
-func (m *SmsMessage) SetText(text string) error {
+func (m *smsMessage) SetText(text string) error {
 	m.text = text
 	return nil
 }
 
-func (m *SmsMessage) GetText() string {
+func (m *smsMessage) GetText() string {
 	return m.text
 }
 
-func (m *SmsMessage) SetOption(name string, value interface{}) error {
+func (m *smsMessage) SetOption(name string, value interface{}) {
 	m.options[name] = value
-	return nil
 }
 
-func (m *SmsMessage) FindOption(name string) (interface{}, bool) {
+func (m *smsMessage) FindOption(name string) (interface{}, bool) {
 	v, exists := m.options[name]
 	return v, exists
 }
 
-func (m *SmsMessage) ListOptionsByName() []string {
+func (m *smsMessage) ListOptionByName() []string {
 	options := make([]string, 0)
 	for name, _ := range m.options {
 		options = append(options, name)

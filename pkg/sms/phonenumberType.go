@@ -1,7 +1,7 @@
 package sms
 
 type (
-	PhonenumberService interface {
+	IPhonenumberService interface {
 		Get() string
 		Set(string) error
 	}
@@ -10,5 +10,5 @@ type (
 		phone string
 	}
 
-	PhonenumberList []PhonenumberService
+	PhonenumberList []IPhonenumberService
 )

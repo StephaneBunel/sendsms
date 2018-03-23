@@ -48,7 +48,7 @@ func (cli *cmdLineAdapter) sendCmd(cmd *cobra.Command, args []string) {
 	}
 }
 
-func (cli *cmdLineAdapter) selectAndConfigureProviderFromProfile() domain.ProviderService {
+func (cli *cmdLineAdapter) selectAndConfigureProviderFromProfile() domain.IProviderService {
 	if cli.flags.profile == "" {
 		rlog.Error("You must select the profile to use")
 		os.Exit(1)

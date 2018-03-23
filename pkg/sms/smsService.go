@@ -4,21 +4,9 @@ import (
 	"github.com/romana/rlog"
 )
 
-type (
-	smsService struct {
-		provider ProviderService
-	}
-)
-
-func NewSmsService(provider ProviderService) *smsService {
-	s := new(smsService)
-	s.provider = provider
-	return s
-}
-
 func (svc *smsService) SendRaw(text string, phoneNumbers ...string) error {
-	var phoneNumberSet = make(map[string]PhonenumberService)
-	var finalRecipients = make([]PhonenumberService, 0)
+	var phoneNumberSet = make(map[string]IPhonenumberService)
+	var finalRecipients = make([]IPhonenumberService, 0)
 
 	for _, phone := range phoneNumbers {
 		p := NewPhonenumber()

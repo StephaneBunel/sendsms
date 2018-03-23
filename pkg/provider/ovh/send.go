@@ -15,7 +15,7 @@ func (p *ovhProvider) prepareNewSMS() ovhSMS {
 	return sms
 }
 
-func (p *ovhProvider) Send(msg *domain.SmsMessage, phoneNumbers ...domain.PhonenumberService) error {
+func (p *ovhProvider) Send(msg domain.IMessageService, phoneNumbers ...domain.IPhonenumberService) error {
 	if p.client == nil {
 		err := p.open()
 		if err != nil {
@@ -30,7 +30,7 @@ func (p *ovhProvider) Send(msg *domain.SmsMessage, phoneNumbers ...domain.Phonen
 	}
 
 	sms := p.prepareNewSMS()
-	for _, optionName := range msg.ListOptionsByName() {
+	for _, optionName := range msg.ListOptionByName() {
 		value, exists := msg.FindOption(optionName)
 		if exists {
 			sms[optionName] = value

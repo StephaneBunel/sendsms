@@ -9,10 +9,6 @@ var (
 	phonenumberErr_BAD = errors.New("BAD Phone number")
 )
 
-func NewPhonenumber() PhonenumberService {
-	return new(phonenumber)
-}
-
 func (pn *phonenumber) Get() string {
 	return pn.phone
 }

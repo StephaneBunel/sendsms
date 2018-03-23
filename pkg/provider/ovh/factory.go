@@ -6,7 +6,7 @@ import (
 	"github.com/ovh/go-ovh/ovh"
 )
 
-func ovhNewProvider() (domain.ProviderService, error) {
+func ovhNewProvider() (domain.IProviderService, error) {
 	p := new(ovhProvider)
 	p.Name = "OVH"
 	p.Version = "0.2"
