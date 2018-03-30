@@ -1,16 +1,16 @@
 # sendsms
 
-A simple command line to send SMS over a selected provider.
+A simple command line (and a library) to send SMS messages throught various providers (gateways).
 
-Right now, and because it was my primary need, only OVH provider is implemented.
-It should be easy to add more provider. The code is designed with that in mind.
-
-sendsms use a configuration file to define profiles. A profile is the way to use
-multiple credentials for the same provider, in instance.
+Currently and because it was my primary goal, only OVH provider is implemented.
+It is easy to add more provider. The code is designed with that in mind.
 
 ## Configuration
 
-Configuration sample (config.yml):
+sendsms use a configuration file (YAML formated) to define profiles.
+Profiles is the way to configure multiple providers/credentials to use.
+
+Example: (config.yml)
 
 ```YAML
 ---
@@ -18,9 +18,9 @@ sendsms:
   logLevel: "INFO"
 
   profiles:
-    default:
-      provider:              "ovh"
-      providerConfig:
+    default:                       # <-- profile name
+      provider:              "ovh" # <-- provider to use for this profile
+      providerConfig:              # <-- provider configuration for this profile
         api:
           location:          "ovh-eu"
           appKey:            "azertyuiop"
@@ -40,13 +40,13 @@ sendsms:
 Send a message to a phone number using default profile:
 
 ```BASH
-sendsms send --phone +330600000000 --message "Hello my friend !"
+sendsms send --phone +336123456789 --message "Hello my friend !"
 ```
 
 You can specify multiple recipient at a time:
 
 ```BASH
-sendsms send --phone +330612345678 --phone +330698547621 --message "Hello my friend !"
+sendsms send --phone +336123456789 --phone +336987654321 --message "Hello my friend !"
 ```
 
 Read message from stdin:
